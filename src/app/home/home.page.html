@@ -1,20 +1,108 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+<ion-header [translucent]="true" xmlns="http://www.w3.org/1999/html">
+  <!--  <ion-toolbar>-->
+  <!--    <ion-title>-->
+  <!--      Open Trivia-->
+  <!--    </ion-title>-->
+  <!--  </ion-toolbar>-->
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!--  <ion-header collapse="condense">-->
+  <!--    <ion-toolbar>-->
+  <!--      <ion-title size="large">Blank</ion-title>-->
+  <!--    </ion-toolbar>-->
+  <!--  </ion-header>-->
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div id="container" class="size">
+
+    <ion-card *ngIf="!beginGame">
+      <ion-card-header>
+
+        <ion-card-title>
+          <h2>Open Trivia</h2>
+        </ion-card-title>
+
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Votre pseudo</ion-label>
+          <ion-input required [(ngModel)]="pseudo" type="text"
+                     name="pseudo"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Difficulté</ion-label>
+          <ion-select required [(ngModel)]="difficulty" name="pseudo" placeholder="Selectionnez une option">
+            <ion-select-option *ngFor="let diff of difficulties" value="{{ diff }}">{{ diff}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-toggle [(ngModel)]="saveInfos"></ion-toggle>
+          <ion-label>Sauvegarder mes informations
+          </ion-label>
+        </ion-item>
+
+        <div class="red" *ngIf="!isHidden"><br/>
+          <p class="red">Veuillez rentrer un pseudo et une difficulté</p></div>
+        <br/>
+        <ion-button expand="full" (click)="start()">Commencer</ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-slides>
+      <ion-slide *ngFor="let currentQuiz of quiz | async">
+        <ion-card>
+          <h1>{{currentQuiz.question}}</h1>
+          <h3 *ngIf="currentQuiz.description != null">{{currentQuiz.description}}</h3>
+          <div class="answers">
+            <ion-radio-group>
+              <form #form="ngForm">
+                <div class="answer" *ngIf="currentQuiz.answers.answer_a != null">
+                  <ion-checkbox value="" name="answer_a" *ngIf="currentQuiz.multiple_correct_answers == 'true'"></ion-checkbox>
+                  <ion-radio name="answer_a" *ngIf="currentQuiz.multiple_correct_answers == 'false'"></ion-radio>
+                  <ion-label for="answer_a">{{currentQuiz.answers.answer_a}}</ion-label>
+                </div>
+                <div class="answer" *ngIf="currentQuiz.answers.answer_b != null">
+                  <ion-checkbox name="answer_b" *ngIf="currentQuiz.multiple_correct_answers == 'true'"></ion-checkbox>
+                  <ion-radio name="answer_b" *ngIf="currentQuiz.multiple_correct_answers == 'false'"></ion-radio>
+
+                  <ion-label for="answer_b">{{currentQuiz.answers.answer_b}}</ion-label>
+                </div>
+                <div class="answer" *ngIf="currentQuiz.answers.answer_c != null">
+                  <ion-checkbox name="answer_c" *ngIf="currentQuiz.multiple_correct_answers == 'true'"></ion-checkbox>
+                  <ion-radio name="answer_c" *ngIf="currentQuiz.multiple_correct_answers == 'false'"></ion-radio>
+
+                  <ion-label for="answer_c">{{currentQuiz.answers.answer_c}}</ion-label>
+                </div>
+                <div class="answer" *ngIf="currentQuiz.answers.answer_d != null">
+                  <ion-checkbox name="answer_d" *ngIf="currentQuiz.multiple_correct_answers =='true'"></ion-checkbox>
+                  <ion-radio name="answer_d" *ngIf="currentQuiz.multiple_correct_answers == 'false'"></ion-radio>
+
+                  <ion-label for="answer_d">{{currentQuiz.answers.answer_d}}</ion-label>
+                </div>
+                <div class="answer" *ngIf="currentQuiz.answers.answer_e != null">
+                  <ion-checkbox name="answer_e" *ngIf="currentQuiz.multiple_correct_answers =='true'"></ion-checkbox>
+                  <ion-radio name="answer_e" *ngIf="currentQuiz.multiple_correct_answers == 'false'"></ion-radio>
+
+                  <ion-label for="answer_e">{{currentQuiz.answers.answer_e}}</ion-label>
+                </div>
+                <div class="answer" *ngIf="currentQuiz.answers.answer_f != null">
+                  <ion-checkbox name="answer_f" *ngIf="currentQuiz.multiple_correct_answers =='true'"></ion-checkbox>
+                  <ion-radio name="answer_f" *ngIf="currentQuiz.multiple_correct_answers == 'false'"></ion-radio>
+                  <ion-label for="answer_f">{{currentQuiz.answers.answer_f}}</ion-label>
+                </div>
+              </form>
+            </ion-radio-group>
+          </div>
+          <ion-button expand="full" (click)="answer()">Question suivante</ion-button>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
   </div>
+
+
 </ion-content>

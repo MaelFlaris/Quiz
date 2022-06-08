@@ -25,3 +25,17 @@
 #container a {
   text-decoration: none;
 }
+ion-slide{
+  flex-direction: column;
+}
+ion-button{
+  max-width: 100%;
+}
+ion-radio{
+  min-width: 20px;
+}
+.answer{
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
